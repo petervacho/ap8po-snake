@@ -8,99 +8,80 @@ namespace Snake
 {
     class Program
     {
+        // Game settings
+        private const int WindowHeightSize = 16;
+        private const int WindowWidthSize = 32;
+        private const int InitialScore = 5;
+        private const int PixelUpdateDelay = 500; // In milliseconds
+
         static void Main()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                WindowHeight = 16;
-                WindowWidth = 32;
+                WindowHeight = WindowHeightSize;
+                WindowWidth = WindowWidthSize;
             }
 
             var rand = new Random();
 
-            var score = 5;
+            var score = InitialScore;
 
             var head = new Pixel(WindowWidth / 2, WindowHeight / 2, ConsoleColor.Red);
-            var berry = new Pixel(
-                rand.Next(1, WindowWidth - 2),
-                rand.Next(1, WindowHeight - 2),
-                ConsoleColor.Cyan
-            );
+            var berry = GenerateBerry(rand);
 
             var body = new List<Pixel>();
 
             var currentMovement = Direction.Right;
 
-            var gameover = false;
+            var gameOver = false;
 
-            while (true)
+            while (!gameOver)
             {
                 Clear();
 
-                gameover |= (
-                    head.XPos == WindowWidth - 1
-                    || head.XPos == 0
-                    || head.YPos == WindowHeight - 1
-                    || head.YPos == 0
-                );
+                // Check for game over conditions
+                gameOver = IsGameOver(head);
 
                 DrawBorder();
 
+                // Check if head eats the berry
                 if (berry.XPos == head.XPos && berry.YPos == head.YPos)
                 {
                     score++;
-                    berry = new Pixel(
-                        rand.Next(1, WindowWidth - 2),
-                        rand.Next(1, WindowHeight - 2),
-                        ConsoleColor.Cyan
-                    );
+                    berry = GenerateBerry(rand);
                 }
 
-                for (int i = 0; i < body.Count; i++)
-                {
-                    DrawPixel(body[i]);
-                    gameover |= (body[i].XPos == head.XPos && body[i].YPos == head.YPos);
-                }
+                // Check for collision with body
+                gameOver |= body.Exists(p => p.XPos == head.XPos && p.YPos == head.YPos);
 
-                if (gameover)
-                {
-                    break;
-                }
-
+                // Draw the snake and berry
+                body.ForEach(DrawPixel);
                 DrawPixel(head);
                 DrawPixel(berry);
 
+                // Handle movement input
                 var sw = Stopwatch.StartNew();
-                while (sw.ElapsedMilliseconds <= 500)
+                while (sw.ElapsedMilliseconds <= PixelUpdateDelay)
                 {
                     currentMovement = ReadMovement(currentMovement);
                 }
 
+                // Add new head position
                 body.Add(new Pixel(head.XPos, head.YPos, ConsoleColor.Green));
 
-                switch (currentMovement)
-                {
-                    case Direction.Up:
-                        head.YPos--;
-                        break;
-                    case Direction.Down:
-                        head.YPos++;
-                        break;
-                    case Direction.Left:
-                        head.XPos--;
-                        break;
-                    case Direction.Right:
-                        head.XPos++;
-                        break;
-                }
+                // Move the snake based on the current movement direction
+                MoveSnake(ref head, currentMovement);
 
+                // Remove tail if snake length exceeds the score
                 if (body.Count > score)
                 {
                     body.RemoveAt(0);
                 }
             }
+
+            // Game over display
             SetCursorPosition(WindowWidth / 5, WindowHeight / 2);
-            WriteLine($"Game over, Score: {score - 5}");
+            WriteLine($"Game over, Score: {score - InitialScore}");
             SetCursorPosition(WindowWidth / 5, WindowHeight / 2 + 1);
             ReadKey();
         }
@@ -137,7 +118,7 @@ namespace Snake
             SetCursorPosition(pixel.XPos, pixel.YPos);
             ForegroundColor = pixel.ScreenColor;
             Write("■");
-            SetCursorPosition(0, 0);
+            SetCursorPosition(0, 0); // Reset cursor position
         }
 
         static void DrawBorder()
@@ -158,6 +139,42 @@ namespace Snake
 
                 SetCursorPosition(WindowWidth - 1, i);
                 Write("■");
+            }
+        }
+
+        static bool IsGameOver(Pixel head)
+        {
+            return head.XPos == WindowWidth - 1
+                || head.XPos == 0
+                || head.YPos == WindowHeight - 1
+                || head.YPos == 0;
+        }
+
+        static Pixel GenerateBerry(Random rand)
+        {
+            return new Pixel(
+                rand.Next(1, WindowWidth - 2),
+                rand.Next(1, WindowHeight - 2),
+                ConsoleColor.Cyan
+            );
+        }
+
+        static void MoveSnake(ref Pixel head, Direction currentMovement)
+        {
+            switch (currentMovement)
+            {
+                case Direction.Up:
+                    head.YPos--;
+                    break;
+                case Direction.Down:
+                    head.YPos++;
+                    break;
+                case Direction.Left:
+                    head.XPos--;
+                    break;
+                case Direction.Right:
+                    head.XPos++;
+                    break;
             }
         }
 
