@@ -51,7 +51,7 @@ class Game
     {
         _isGameOver = _snake.HasCollided();
 
-        if (_snake.Head.XPos == _food.Position.XPos && _snake.Head.YPos == _food.Position.YPos)
+        if (_snake.HitFood(_food))
         {
             _score++;
             _food.GenerateNewFood();

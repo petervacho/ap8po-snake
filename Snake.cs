@@ -47,6 +47,10 @@ class Snake
         Body.Add(new Pixel(Head.XPos, Head.YPos, SnakeColor));
     }
 
+    /**
+     * Check if the snake has colided with a game border or with itself, triggering
+     * a game-over condition.
+     */
     public bool HasCollided()
     {
         if (
@@ -68,5 +72,13 @@ class Snake
         }
 
         return false;
+    }
+
+    /**
+     * Check if the snake hit a piece of food.
+     */
+    public bool HitFood(Food food)
+    {
+        return Head.XPos == food.Position.XPos && Head.YPos == food.Position.YPos;
     }
 }
