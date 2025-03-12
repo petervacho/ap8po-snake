@@ -28,21 +28,19 @@ class Snake : Drawable
     {
         Body.Add(new Pixel(Head.XPos, Head.YPos, SnakeColor));
 
-        // Since Pixel is a struct, we need to reset it to a new one when moving
-        // (mutating structs isn't possible)
         switch (direction)
         {
             case Direction.MoveUp:
-                Head = new Pixel(Head.XPos, Head.YPos - 1, Head.ScreenColor);
+                Head.YPos--;
                 break;
             case Direction.MoveDown:
-                Head = new Pixel(Head.XPos, Head.YPos + 1, Head.ScreenColor);
+                Head.YPos++;
                 break;
             case Direction.MoveLeft:
-                Head = new Pixel(Head.XPos - 1, Head.YPos, Head.ScreenColor);
+                Head.XPos--;
                 break;
             case Direction.MoveRight:
-                Head = new Pixel(Head.XPos + 1, Head.YPos, Head.ScreenColor);
+                Head.XPos++;
                 break;
         }
 
