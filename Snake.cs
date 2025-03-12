@@ -19,19 +19,21 @@ class Snake
     {
         Body.Add(new Pixel(Head.XPos, Head.YPos, SnakeColor));
 
+        // Since Pixel is a struct, we need to reset it to a new one when moving
+        // (mutating structs isn't possible)
         switch (direction)
         {
             case Direction.MoveUp:
-                Head.YPos--;
+                Head = new Pixel(Head.XPos, Head.YPos - 1, Head.ScreenColor);
                 break;
             case Direction.MoveDown:
-                Head.YPos++;
+                Head = new Pixel(Head.XPos, Head.YPos + 1, Head.ScreenColor);
                 break;
             case Direction.MoveLeft:
-                Head.XPos--;
+                Head = new Pixel(Head.XPos - 1, Head.YPos, Head.ScreenColor);
                 break;
             case Direction.MoveRight:
-                Head.XPos++;
+                Head = new Pixel(Head.XPos + 1, Head.YPos, Head.ScreenColor);
                 break;
         }
 

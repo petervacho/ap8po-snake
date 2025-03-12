@@ -1,10 +1,10 @@
 namespace SnakeGame;
 
-public class Pixel
+public struct Pixel
 {
-    public int XPos { get; set; }
-    public int YPos { get; set; }
-    public ConsoleColor ScreenColor { get; set; }
+    public int XPos;
+    public int YPos;
+    public ConsoleColor ScreenColor;
 
     public Pixel(int xPos, int yPos, ConsoleColor color)
     {
