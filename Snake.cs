@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SnakeGame;
 
-class Snake
+class Snake : Drawable
 {
     public Pixel Head { get; private set; }
     public List<Pixel> Body { get; private set; }
@@ -13,6 +13,15 @@ class Snake
     {
         Head = new Pixel(Console.WindowWidth / 2, Console.WindowHeight / 2, ConsoleColor.Red);
         Body = new List<Pixel>();
+    }
+
+    public void Draw(Renderer renderer)
+    {
+        renderer.RenderPixel(Head, '■');
+        foreach (var part in Body)
+        {
+            renderer.RenderPixel(part, '■');
+        }
     }
 
     public void Move(Direction direction)

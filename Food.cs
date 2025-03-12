@@ -1,8 +1,6 @@
-using System;
-
 namespace SnakeGame;
 
-class Food
+class Food : Drawable
 {
     private static readonly Random RandomGenerator = new Random();
     public Pixel Position { get; private set; }
@@ -10,6 +8,11 @@ class Food
     public Food()
     {
         GenerateNewFood();
+    }
+
+    public void Draw(Renderer renderer)
+    {
+        renderer.RenderPixel(Position, '■');
     }
 
     public void GenerateNewFood()

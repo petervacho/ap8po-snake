@@ -1,16 +1,16 @@
-using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace SnakeGame;
 
-class Game
+class Game : Drawable
 {
     private readonly Snake _snake;
     private readonly Food _food;
     private bool _isGameOver;
     private int _score;
     private Direction _currentDirection;
+    private Renderer _renderer;
 
     public Game()
     {
@@ -27,6 +27,7 @@ class Game
         _score = 5;
         _currentDirection = Direction.MoveRight;
         _isGameOver = false;
+        _renderer = new Renderer();
     }
 
     public void Run()
@@ -34,7 +35,7 @@ class Game
         while (!_isGameOver)
         {
             CheckCollision();
-            Renderer.RenderGame(_snake, _food);
+            _renderer.Render(this);
 
             // Game tick time
             var stopwatch = Stopwatch.StartNew();
@@ -43,7 +44,7 @@ class Game
             _currentDirection = GetUpdatedDirection(_currentDirection);
             _snake.Move(_currentDirection);
         }
-        Renderer.DisplayGameOver(_score);
+        _renderer.DisplayGameOver(_score);
     }
 
     private void CheckCollision()
@@ -73,5 +74,26 @@ class Game
                 Direction.MoveRight,
             _ => currentDirection,
         };
+    }
+
+    public void Draw(Renderer renderer)
+    {
+        ConsoleColor borderColor = ConsoleColor.White;
+        char borderChar = '■';
+
+        for (int i = 0; i < Console.WindowWidth; i++)
+        {
+            renderer.RenderPixel(new Pixel(i, 0, borderColor), borderChar);
+            renderer.RenderPixel(new Pixel(i, Console.WindowHeight - 1, borderColor), borderChar);
+        }
+
+        for (int i = 0; i < Console.WindowHeight; i++)
+        {
+            renderer.RenderPixel(new Pixel(0, i, borderColor), borderChar);
+            renderer.RenderPixel(new Pixel(Console.WindowWidth - 1, i, borderColor), borderChar);
+        }
+
+        _snake.Draw(renderer);
+        _food.Draw(renderer);
     }
 }
