@@ -32,11 +32,11 @@ class Renderer
         }
     }
 
-    private static void RenderPixel(Pixel pixel)
+    private static void RenderPixel(Pixel pixel, char character = '■')
     {
         Console.SetCursorPosition(pixel.XPos, pixel.YPos);
         Console.ForegroundColor = pixel.ScreenColor;
-        Console.Write("■");
+        Console.Write(character);
         Console.SetCursorPosition(0, 0);
     }
 
