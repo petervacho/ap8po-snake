@@ -11,6 +11,7 @@ class Game : Drawable
     private int _score;
     private Direction _currentDirection;
     private Renderer _renderer;
+    private float _tickTime;
 
     public Game()
     {
@@ -28,6 +29,7 @@ class Game : Drawable
         _currentDirection = Direction.MoveRight;
         _isGameOver = false;
         _renderer = new Renderer();
+        _tickTime = 150;
     }
 
     public void Run()
@@ -37,9 +39,9 @@ class Game : Drawable
             CheckCollision();
             _renderer.Render(this);
 
-            // Game tick time
+            // Game tick delay
             var stopwatch = Stopwatch.StartNew();
-            while (stopwatch.ElapsedMilliseconds <= 300) { }
+            while (stopwatch.ElapsedMilliseconds <= _tickTime) { }
 
             _currentDirection = GetUpdatedDirection(_currentDirection);
             _snake.Move(_currentDirection);
