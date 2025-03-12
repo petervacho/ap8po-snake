@@ -6,6 +6,7 @@ class Renderer
 {
     public static void RenderGame(Snake snake, Food food)
     {
+        Console.Clear();
         RenderGameBorder();
         RenderPixel(snake.Head);
         foreach (var part in snake.Body)

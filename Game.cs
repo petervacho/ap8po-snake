@@ -33,7 +33,6 @@ class Game
     {
         while (!_isGameOver)
         {
-            Console.Clear();
             CheckCollision();
             Renderer.RenderGame(_snake, _food);
 
