@@ -17,22 +17,18 @@ class Renderer
 
     private static void RenderGameBorder()
     {
+        ConsoleColor borderColor = ConsoleColor.White;
+
         for (int i = 0; i < Console.WindowWidth; i++)
         {
-            Console.SetCursorPosition(i, 0);
-            Console.Write("■");
-
-            Console.SetCursorPosition(i, Console.WindowHeight - 1);
-            Console.Write("■");
+            RenderPixel(new Pixel(i, 0, borderColor));
+            RenderPixel(new Pixel(i, Console.WindowHeight - 1, borderColor));
         }
 
         for (int i = 0; i < Console.WindowHeight; i++)
         {
-            Console.SetCursorPosition(0, i);
-            Console.Write("■");
-
-            Console.SetCursorPosition(Console.WindowWidth - 1, i);
-            Console.Write("■");
+            RenderPixel(new Pixel(0, i, borderColor));
+            RenderPixel(new Pixel(Console.WindowWidth - 1, i, borderColor));
         }
     }
 
