@@ -7,10 +7,11 @@ class Snake : Drawable
 {
     public Pixel Head { get; private set; }
     public List<Pixel> Body { get; private set; }
-    private const ConsoleColor SnakeColor = ConsoleColor.Green;
+    private ConsoleColor _color;
 
-    public Snake()
+    public Snake(ConsoleColor color = ConsoleColor.Green)
     {
+        _color = color;
         Head = new Pixel(Console.WindowWidth / 2, Console.WindowHeight / 2, ConsoleColor.Red);
         Body = new List<Pixel>();
     }
@@ -26,7 +27,7 @@ class Snake : Drawable
 
     public void Move(Direction direction)
     {
-        Body.Add(new Pixel(Head.XPos, Head.YPos, SnakeColor));
+        Body.Add(new Pixel(Head.XPos, Head.YPos, _color));
 
         switch (direction)
         {
@@ -53,7 +54,7 @@ class Snake : Drawable
 
     public void Grow()
     {
-        Body.Add(new Pixel(Head.XPos, Head.YPos, SnakeColor));
+        Body.Add(new Pixel(Head.XPos, Head.YPos, _color));
     }
 
     /**
