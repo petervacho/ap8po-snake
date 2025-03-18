@@ -6,7 +6,7 @@ namespace SnakeGame;
 class Game : Drawable
 {
     private readonly Snake _snake;
-    private readonly Food _food;
+    private readonly List<Food> _foods;
     private bool _isGameOver;
     private int _score;
     private Direction _currentDirection;
@@ -24,7 +24,13 @@ class Game : Drawable
         }
 
         _snake = new Snake();
-        _food = new Food();
+        _foods = new List<Food>();
+        for (int i = 0; i < 3; i++)
+        {
+            Food food = new Food();
+            food.GenerateNewPosition();
+            _foods.Add(food);
+        }
         _score = 5;
         _currentDirection = Direction.MoveRight;
         _isGameOver = false;
@@ -53,11 +59,14 @@ class Game : Drawable
     {
         _isGameOver = _snake.HasCollided();
 
-        if (_snake.HitFood(_food))
+        foreach (var food in _foods.ToList())
         {
-            _score++;
-            _food.GenerateNewPosition();
-            _snake.Grow();
+            if (_snake.HitFood(food))
+            {
+                _score++;
+                food.GenerateNewPosition();
+                _snake.Grow();
+            }
         }
     }
 
@@ -96,6 +105,10 @@ class Game : Drawable
         }
 
         _snake.Draw(renderer);
-        _food.Draw(renderer);
+
+        foreach (var food in _foods)
+        {
+            food.Draw(_renderer);
+        }
     }
 }
