@@ -1,21 +1,13 @@
 namespace SnakeGame;
 
-class Food : Drawable
+class Food : FoodBase
 {
-    private static readonly Random RandomGenerator = new Random();
-    public Pixel Position { get; private set; }
-
-    public Food()
-    {
-        GenerateNewFood();
-    }
-
-    public void Draw(Renderer renderer)
+    public override void Draw(Renderer renderer)
     {
         renderer.RenderPixel(Position, '■');
     }
 
-    public void GenerateNewFood()
+    public override void GenerateNewPosition()
     {
         Position = new Pixel(
             RandomGenerator.Next(1, Console.WindowWidth - 2),

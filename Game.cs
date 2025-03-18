@@ -56,7 +56,7 @@ class Game : Drawable
         if (_snake.HitFood(_food))
         {
             _score++;
-            _food.GenerateNewFood();
+            _food.GenerateNewPosition();
             _snake.Grow();
         }
     }
