@@ -18,4 +18,10 @@ class Food : FoodBase
             ConsoleColor.Cyan
         );
     }
+
+    public override void ApplyEffect(Game game)
+    {
+        game.IncreaseScore(1);
+        game.GrowSnake();
+    }
 }

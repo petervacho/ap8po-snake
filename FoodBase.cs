@@ -12,4 +12,5 @@ abstract class FoodBase : Drawable
 
     public abstract void Draw(Renderer renderer);
     public abstract void GenerateNewPosition();
+    public abstract void ApplyEffect(Game game);
 }

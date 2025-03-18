@@ -63,9 +63,8 @@ class Game : Drawable
         {
             if (_snake.HitFood(food))
             {
-                _score++;
+                food.ApplyEffect(this);
                 food.GenerateNewPosition();
-                _snake.Grow();
             }
         }
     }
@@ -111,4 +110,8 @@ class Game : Drawable
             food.Draw(_renderer);
         }
     }
+
+    public void IncreaseScore(int amount) => _score += amount;
+
+    public void GrowSnake() => _snake.Grow();
 }
